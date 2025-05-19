@@ -8,15 +8,23 @@ pipeline {
             }
         }
 
-        stage('Clean up CI container') {
+        stage('Clean up containers') {
             steps {
-                sh 'docker rm -f taskmanager-app-ci || true'
+                sh 'docker compose -p game-app down || true'
             }
         }
 
-        stage('Build & Run CI Container') {
+        stage('Build & Run Containers') {
             steps {
-                sh 'docker compose -p game-app -f docker-compose.ci.yml up -d --build'
+                sh 'docker compose -p game-app -f docker-compose.yml up -d --build'
+            }
+        }
+
+        stage('Verify Services') {
+            steps {
+                // Add health checks if needed
+                sh 'sleep 10' // Give containers time to start
+                sh 'curl -I http://localhost:5050 || true' // Example check
             }
         }
     }
