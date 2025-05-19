@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout SCM') {
+            steps {
+                git url: 'https://github.com/Ash4477/devops-assignment2.git', branch: 'main'
+            }
+        }
+
+        stage('Clean up CI container') {
+            steps {
+                sh 'docker rm -f taskmanager-app-ci || true'
+            }
+        }
+
+        stage('Build & Run CI Container') {
+            steps {
+                sh 'docker compose -p game-app -f docker-compose.ci.yml up -d --build'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline finished.'
+        }
+        success {
+            echo 'Build completed successfully!'
+        }
+        failure {
+            echo 'Build failed. Check logs for details.'
+        }
+    }
+}
