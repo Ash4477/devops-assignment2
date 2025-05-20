@@ -4,7 +4,7 @@ import "../styles/StartBox.css";
 const StartBox = ({ getDifficultyLevel }) => {
   return (
     <div className="nes-container start-box is-rounded">
-      <p>Select a difficulty level</p>
+      <p>->Select a difficulty level</p>
       <LevelOptions getDifficultyLevel={getDifficultyLevel} />
     </div>
   );
