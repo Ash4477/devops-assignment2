@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        TEST_REPO = 'https://github.com/Ash4477/devops-assignment-3-part-1.git'
+    }
+
+
     stages {
         stage('Checkout SCM') {
             steps {
@@ -27,6 +32,18 @@ pipeline {
                 sh 'curl -I http://localhost:5050 || true' // Example check
             }
         }
+
+         stage('Clone Test Repo & Run Tests') {
+            steps {
+                dir('tests') {
+                    sh """
+                        git clone ${TEST_REPO} .
+                        npm install
+                        node testMemoryGame.js
+                    """
+                }
+            }
+        }
     }
 
     post {
@@ -34,10 +51,10 @@ pipeline {
             echo 'Pipeline finished.'
         }
         success {
-            echo 'Build completed successfully!'
+            echo 'Build and Tests successfull!'
         }
         failure {
-            echo 'Build failed. Check logs for details.'
+            echo 'Build or tests failed. Check logs for details.'
         }
     }
 }
