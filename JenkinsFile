@@ -37,7 +37,8 @@ pipeline {
             steps {
                 dir('tests') {
                     sh """
-                        git clone ${TEST_REPO} .
+                        git clone https://github.com/Ash4477/devops-assignment-3-part-1.git selenium-tests
+                        cd selenium-tests
                         npm install
                         node testMemoryGame.js
                     """
