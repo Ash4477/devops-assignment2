@@ -36,20 +36,22 @@ pipeline {
          stage('Clone Test Repo & Run Tests') {
             steps {
                 dir('tests') {
-                    sh """
-                        echo "🧹 Cleaning up previous test folder..."
-                        rm -rf selenium-tests
+                    timeout(time: 5, unit: 'MINUTES') {
+                        sh '''
+                            echo 🧹 Cleaning up previous test folder...
+                            rm -rf selenium-tests
 
-                        echo "📥 Cloning test repo..."
-                        git clone https://github.com/Ash4477/devops-assignment-3-part-1.git selenium-tests
+                            echo 📥 Cloning test repo...
+                            git clone https://github.com/Ash4477/devops-assignment-3-part-1.git selenium-tests
 
-                        echo "📦 Installing test dependencies..."
-                        cd selenium-tests
-                        npm install
+                            echo 📦 Installing test dependencies...
+                            cd selenium-tests
+                            npm install
 
-                        echo "🚀 Running tests..."
-                        node testMemoryGame.js
-                    """
+                            echo 🚀 Running tests...
+                            node testMemoryGame.js
+                        '''
+                    }
                 }
             }
         }
