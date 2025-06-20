@@ -63,6 +63,15 @@ pipeline {
         }
         success {
             echo 'Build and Tests successfull!'
+            emailext(
+                subject: "✅ SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                    <h3>🎉 Build Successful</h3>
+                    <p>Job <b>${env.JOB_NAME}</b> completed successfully.</p>
+                    <p><a href="${env.BUILD_URL}">View Full Logs</a></p>
+                """,
+                to: 'adilferoze321@gmail.com'
+            )
         }
         failure {
             echo 'Build or tests failed. Check logs for details.'
